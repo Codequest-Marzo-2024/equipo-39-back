@@ -44,7 +44,9 @@ model Raffle {
   description String
   url         String        @unique
   isActive    Boolean       @default(true)
-  deadline    DateTime
+  isFinished  Boolean       @default(false)
+  initialDate DateTime
+  finalDate   DateTime
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   madeBy      Int
