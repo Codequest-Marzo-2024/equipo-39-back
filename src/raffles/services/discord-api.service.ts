@@ -88,7 +88,9 @@ export class DiscordApiService {
 
       return guild;
     } catch (error) {
-      throw new BadRequestException(error);
+      throw new BadRequestException(
+        `Guild with id ${guildId} not found: ${error} - Remember to invite the bot to the guild.`,
+      );
     }
   }
 
