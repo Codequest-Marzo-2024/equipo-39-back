@@ -25,11 +25,11 @@ export class DiscordApiService {
       ],
     });
 
-    this.client.on('ready', () => {
-      this.logger.log(`Logged in as ${this.client.user.tag}!`);
-    });
+    // this.client.on('ready', () => {
+    //   this.logger.log(`Logged in as ${this.client.user.tag}!`);
+    // });
 
-    this.loginOnDiscord();
+    // this.loginOnDiscord();
   }
 
   async loginOnDiscord() {

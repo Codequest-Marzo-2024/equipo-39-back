@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { User } from '@prisma/client';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { Auth, GetUser } from 'src/auth/decorators';
 import { ValidRoles } from 'src/auth/interfaces';
@@ -19,6 +20,7 @@ import {
 } from '../services';
 import { CreateRaffleDto, UpdateRaffleDto, CreateParticipantDto } from '../dto';
 
+@ApiTags('Raffles')
 @Controller('raffles')
 export class RafflesController {
   constructor(
@@ -28,6 +30,7 @@ export class RafflesController {
   ) {}
 
   @Auth(ValidRoles.ADMIN)
+  @ApiBearerAuth('JWT')
   @Get()
   findAllRaffles() {
     return this.rafflesService.findAll();
@@ -35,11 +38,13 @@ export class RafflesController {
 
   @Get(':raffleId')
   @Auth(ValidRoles.ADMIN)
+  @ApiBearerAuth('JWT')
   findOneRaffleById(@Param('raffleId', ParseIntPipe) raffleId: number) {
     return this.rafflesService.findOne(raffleId);
   }
 
   @Auth(ValidRoles.ADMIN)
+  @ApiBearerAuth('JWT')
   @Post()
   createRaffle(
     @Body() createRaffleDto: CreateRaffleDto,
@@ -49,6 +54,7 @@ export class RafflesController {
   }
 
   @Auth(ValidRoles.ADMIN)
+  @ApiBearerAuth('JWT')
   @Patch(':raffleId')
   updateRaffle(
     @Param('raffleId', ParseIntPipe) raffleId: number,
@@ -58,6 +64,7 @@ export class RafflesController {
   }
 
   @Auth(ValidRoles.ADMIN)
+  @ApiBearerAuth('JWT')
   @Delete(':raffleId')
   remove(@Param('raffleId', ParseIntPipe) raffleId: number) {
     return this.rafflesService.remove(raffleId);
@@ -80,6 +87,7 @@ export class RafflesController {
   }
 
   @Auth(ValidRoles.ADMIN)
+  @ApiBearerAuth('JWT')
   @Delete(':raffleId/participant/:participantId')
   removeParticipant(
     @Param('raffleId', ParseIntPipe) raffleId: number,
@@ -89,6 +97,7 @@ export class RafflesController {
   }
 
   @Auth(ValidRoles.ADMIN)
+  @ApiBearerAuth('JWT')
   @Get(':raffleId/draw/:quantityWinners')
   drawRaffle(
     @Param('raffleId', ParseIntPipe) raffleId: number,
@@ -103,6 +112,7 @@ export class RafflesController {
   }
 
   @Auth(ValidRoles.ADMIN)
+  @ApiBearerAuth('JWT')
   @Delete(':raffleId/winners')
   removeWinners(@Param('raffleId', ParseIntPipe) raffleId: number) {
     return this.drawRaffleService.removeWinners(raffleId);

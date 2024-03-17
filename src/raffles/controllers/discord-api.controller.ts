@@ -1,8 +1,12 @@
 import { Controller, Get, Param } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+
 import { DiscordApiService } from '../services';
 import { Auth } from 'src/auth/decorators';
 import { ValidRoles } from 'src/auth/interfaces';
 
+@ApiTags('Discord Api')
+@ApiBearerAuth('JWT')
 @Auth(ValidRoles.ADMIN)
 @Controller('discord-api')
 export class DiscordApiController {

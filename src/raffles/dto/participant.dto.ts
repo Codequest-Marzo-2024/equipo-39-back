@@ -1,13 +1,16 @@
 import { IsString, IsBoolean, IsOptional } from 'class-validator';
-import { PartialType } from '@nestjs/mapped-types';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 
 export class CreateParticipantDto {
+  @ApiProperty()
   @IsString()
   username: string;
 
+  @ApiProperty()
   @IsString()
   idPlatform: string;
 
+  @ApiProperty({ required: false })
   @IsBoolean()
   @IsOptional()
   isActive: boolean;
