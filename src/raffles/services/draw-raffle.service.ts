@@ -9,6 +9,7 @@ export class DrawRaffleService {
     const participantIds = await this.prismaService.participant.findMany({
       where: {
         raffleId,
+        isActive: true,
       },
       select: {
         id: true,
@@ -21,14 +22,17 @@ export class DrawRaffleService {
       );
     }
 
-    const raffle = await this.prismaService.winner.findFirst({
+    const raffle = await this.prismaService.raffle.findFirst({
       where: {
-        raffleId,
+        id: raffleId,
+        OR: [{ isFinished: true }, { isActive: false }],
       },
     });
 
     if (raffle) {
-      throw new BadRequestException('The raffle has already been drawn');
+      throw new BadRequestException(
+        'The raffle has already been drawn or is not active',
+      );
     }
 
     const winners = [];
@@ -47,9 +51,20 @@ export class DrawRaffleService {
       };
     });
 
-    return await this.prismaService.winner.createMany({
+    const resp = await this.prismaService.winner.createMany({
       data,
     });
+
+    await this.prismaService.raffle.update({
+      where: {
+        id: raffleId,
+      },
+      data: {
+        isFinished: true,
+      },
+    });
+
+    return resp;
   }
 
   async getWinners(raffleId: number) {

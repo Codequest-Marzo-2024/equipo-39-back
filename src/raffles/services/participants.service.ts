@@ -95,7 +95,7 @@ export class ParticipantsService {
       throw new BadRequestException('Raffle has ended');
     }
 
-    if (!raffle.isFinished) {
+    if (raffle.isFinished) {
       throw new BadRequestException('Raffle is finished');
     }
   }

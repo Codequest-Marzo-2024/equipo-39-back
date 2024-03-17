@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateRaffleDto, UpdateRaffleDto } from '../dto/raffle.dto';
 import { PrismaService } from 'src/prisma.service';
 import { User } from '@prisma/client';
@@ -9,7 +9,7 @@ export class RafflesService {
   constructor(private prismaService: PrismaService) {}
 
   async create(createRaffleDto: CreateRaffleDto, mabeBy: User) {
-    this.validateFinalDate(createRaffleDto.finalDate);
+    this.validateDates(createRaffleDto.initialDate, createRaffleDto.finalDate);
     const initialDate = new Date(createRaffleDto.initialDate);
     const finalDate = new Date(createRaffleDto.finalDate);
 
@@ -52,29 +52,37 @@ export class RafflesService {
   }
 
   async findOne(id: number) {
-    return await this.prismaService.raffle.findUnique({
-      where: {
-        id,
-      },
-      include: {
-        User: {
-          select: {
-            id: true,
-            email: true,
+    try {
+      return await this.prismaService.raffle.findUniqueOrThrow({
+        where: {
+          id,
+        },
+        include: {
+          User: {
+            select: {
+              id: true,
+              email: true,
+            },
+          },
+          Winner: true,
+          _count: {
+            select: {
+              Participant: { where: { isActive: true } },
+            },
           },
         },
-        _count: {
-          select: {
-            Participant: { where: { isActive: true } },
-          },
-        },
-      },
-    });
+      });
+    } catch (error) {
+      handlerErrorDB(error, 'Raffle');
+    }
   }
 
   async update(id: number, updateRaffleDto: UpdateRaffleDto) {
     if (updateRaffleDto.finalDate) {
-      this.validateFinalDate(updateRaffleDto.finalDate);
+      this.validateDates(
+        updateRaffleDto.initialDate,
+        updateRaffleDto.finalDate,
+      );
     }
 
     try {
@@ -103,6 +111,7 @@ export class RafflesService {
     return this.prismaService.raffle.update({
       where: {
         id,
+        isActive: true,
       },
       data: {
         isActive: false,
@@ -110,11 +119,21 @@ export class RafflesService {
     });
   }
 
-  validateFinalDate(finalDate: string) {
-    const date = new Date(finalDate);
+  validateDates(initialDate: string, finalDate: string) {
+    const currentDate = new Date();
+    const startDate = new Date(initialDate);
+    const endDate = new Date(finalDate);
 
-    if (date < new Date()) {
-      throw new Error('The deadline must be greater than the current date');
+    if (endDate < currentDate) {
+      throw new BadRequestException(
+        'The end date must be greater than the current date',
+      );
+    }
+
+    if (endDate < startDate) {
+      throw new BadRequestException(
+        'The end date must be greater than the start date',
+      );
     }
   }
 }
