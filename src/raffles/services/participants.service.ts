@@ -20,6 +20,8 @@ export class ParticipantsService {
     raffleId: number,
     createParticipantDto: CreateParticipantDto,
   ) {
+    await this.validateRaffleIsActive(raffleId);
+
     const isMemberInDiscord = await this.discordApiService.searchMemberById(
       this.configService.discord.idServer,
       createParticipantDto.idPlatform,
@@ -71,6 +73,30 @@ export class ParticipantsService {
       });
     } catch (error) {
       handlerErrorDB(error, 'Participant');
+    }
+  }
+
+  async validateRaffleIsActive(raffleId: number) {
+    const raffle = await this.prismaService.raffle.findUnique({
+      where: {
+        id: raffleId,
+      },
+    });
+
+    if (!raffle.isActive) {
+      throw new BadRequestException('Raffle is not active or does not exist');
+    }
+
+    if (new Date() < new Date(raffle.initialDate)) {
+      throw new BadRequestException('Raffle has not started');
+    }
+
+    if (new Date() > new Date(raffle.finalDate)) {
+      throw new BadRequestException('Raffle has ended');
+    }
+
+    if (!raffle.isFinished) {
+      throw new BadRequestException('Raffle is finished');
     }
   }
 }

@@ -11,14 +11,15 @@ export class CreateRaffleDto {
   @IsString()
   url: string;
 
+  @IsDateString()
+  initialDate: string;
+
+  @IsDateString()
+  finalDate: string;
+
   @IsBoolean()
   @IsOptional()
   isActive: boolean;
-
-  @IsDateString({
-    strictSeparator: true,
-  })
-  deadline: string;
 }
 
 export class UpdateRaffleDto extends PartialType(CreateRaffleDto) {}

@@ -9,14 +9,16 @@ export class RafflesService {
   constructor(private prismaService: PrismaService) {}
 
   async create(createRaffleDto: CreateRaffleDto, mabeBy: User) {
-    this.validateDeadline(createRaffleDto.deadline);
-    const deadline = new Date(createRaffleDto.deadline);
+    this.validateFinalDate(createRaffleDto.finalDate);
+    const initialDate = new Date(createRaffleDto.initialDate);
+    const finalDate = new Date(createRaffleDto.finalDate);
 
     try {
       const data = await this.prismaService.raffle.create({
         data: {
           ...createRaffleDto,
-          deadline,
+          initialDate,
+          finalDate,
           User: {
             connect: {
               id: mabeBy.id,
@@ -71,8 +73,8 @@ export class RafflesService {
   }
 
   async update(id: number, updateRaffleDto: UpdateRaffleDto) {
-    if (updateRaffleDto.deadline) {
-      this.validateDeadline(updateRaffleDto.deadline);
+    if (updateRaffleDto.finalDate) {
+      this.validateFinalDate(updateRaffleDto.finalDate);
     }
 
     try {
@@ -82,8 +84,11 @@ export class RafflesService {
         },
         data: {
           ...updateRaffleDto,
-          deadline: updateRaffleDto.deadline
-            ? new Date(updateRaffleDto.deadline)
+          initialDate: updateRaffleDto.initialDate
+            ? new Date(updateRaffleDto.initialDate)
+            : undefined,
+          finalDate: updateRaffleDto.finalDate
+            ? new Date(updateRaffleDto.finalDate)
             : undefined,
         },
       });
@@ -105,8 +110,8 @@ export class RafflesService {
     });
   }
 
-  validateDeadline(deadline: string) {
-    const date = new Date(deadline);
+  validateFinalDate(finalDate: string) {
+    const date = new Date(finalDate);
 
     if (date < new Date()) {
       throw new Error('The deadline must be greater than the current date');
