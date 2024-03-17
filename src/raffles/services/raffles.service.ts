@@ -61,9 +61,9 @@ export class RafflesService {
             email: true,
           },
         },
-        Participant: {
+        _count: {
           select: {
-            _count: true,
+            Participant: { where: { isActive: true } },
           },
         },
       },
