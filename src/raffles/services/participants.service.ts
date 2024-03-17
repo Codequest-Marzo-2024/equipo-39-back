@@ -1,12 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
+
+import { handlerErrorDB } from 'src/common/utils/handler-errors-db';
+import config from 'src/configurations/env-config';
 import { CreateParticipantDto } from '../dto';
 import { DiscordApiService } from './discord-api.service';
-import { handlerErrorDB } from 'src/common/utils/handler-errors-db';
+import { ConfigType } from '@nestjs/config';
 
 @Injectable()
 export class ParticipantsService {
   constructor(
+    @Inject(config.KEY)
+    private readonly configService: ConfigType<typeof config>,
     private prismaService: PrismaService,
     private readonly discordApiService: DiscordApiService,
   ) {}
@@ -15,12 +20,22 @@ export class ParticipantsService {
     raffleId: number,
     createParticipantDto: CreateParticipantDto,
   ) {
-    // TODO: Antes de registrar, se debe Verificar si en un servidor especifico de discord existe un usuario con el mismo nombre
+    const isMemberInDiscord = await this.discordApiService.searchMemberById(
+      this.configService.discord.idServer,
+      createParticipantDto.idPlatform,
+    );
+
+    if (!isMemberInDiscord) {
+      throw new BadRequestException(
+        `User not found in Server Discord: ${isMemberInDiscord.guild}`,
+      );
+    }
 
     try {
       return await this.prismaService.participant.create({
         data: {
-          ...createParticipantDto,
+          username: isMemberInDiscord.username,
+          idPlatform: isMemberInDiscord.id,
           Raffle: {
             connect: {
               id: raffleId,

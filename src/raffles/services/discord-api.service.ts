@@ -73,6 +73,7 @@ export class DiscordApiService {
         message: `Member found in guild ${guild.name}`,
         id: member.id,
         username: member.user.username,
+        guild: guild.name,
       };
     } catch (error) {
       throw new BadRequestException(error);
