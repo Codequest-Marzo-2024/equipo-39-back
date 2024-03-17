@@ -31,6 +31,7 @@ const envConfig = () => ({
 
   discord: {
     botToken: process.env.DISCORD_BOT_TOKEN,
+    idServer: process.env.DISCORD_ID_SERVER,
   },
 
   jwtToken: process.env.JWT_SECRET,
