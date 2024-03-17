@@ -7,11 +7,15 @@ import {
   Param,
   ParseIntPipe,
 } from '@nestjs/common';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 
 import { Auth } from '../decorators';
 import { ValidRoles } from '../interfaces/valid-roles.interface';
 import { UsersService } from '../services/users.service';
 
+@ApiTags('Users')
+@ApiBearerAuth('JWT')
+@Auth(ValidRoles.ADMIN)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -22,7 +26,6 @@ export class UsersController {
   }
 
   @Patch(':id')
-  @Auth(ValidRoles.ADMIN)
   update(
     @Param('id', ParseIntPipe) id: number,
     @Body() updateUserDto: UpdateUserDto,
@@ -31,7 +34,6 @@ export class UsersController {
   }
 
   @Patch(':id/make-admin')
-  @Auth(ValidRoles.ADMIN)
   makeAdmin(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.makeAdmin(id);
   }

@@ -5,12 +5,14 @@ import {
   MaxLength,
   MinLength,
 } from 'class-validator';
-import { PartialType } from '@nestjs/mapped-types';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 
 export class CreateUserDto {
+  @ApiProperty()
   @IsEmail()
   email: string;
 
+  @ApiProperty({ minLength: 6, maxLength: 50 })
   @IsString()
   @MinLength(6)
   @MaxLength(50)
