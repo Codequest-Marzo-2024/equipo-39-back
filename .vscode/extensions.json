@@ -1,0 +1,8 @@
+{
+    "recommendations": [
+        "humao.rest-client",
+        "eliostruyf.vscode-typescript-exportallmodules",
+        "usernamehw.errorlens",
+        "prisma.prisma"
+    ]
+}

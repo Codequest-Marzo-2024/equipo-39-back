@@ -1,0 +1,33 @@
+{
+    "material-icon-theme.activeIconPack": "nest",
+    "rest-client.environmentVariables": {
+        "$shared": {},
+        "local": {
+            "hostname": "http://0.0.0.0:3350/api",
+            "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTcxMDYyOTg5NiwiZXhwIjoxNzEwNjczMDk2fQ.jy-byLkV1qphNcZTtnwsacBAmfA8GDDywS81iAT5zgQ",
+        },
+        "production": {
+            "hostname": "https://0.0.0.0:3350/api",
+            "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjIsImlhdCI6MTY5NTU5OTcwNSwiZXhwIjoxNjk1Njg2MTA1fQ.bCm5AT4-S1jiNvXu-c5pXrHJ-cz0TJx_HGr_5rofXgQ",
+        }
+    },
+    "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#ab307e",
+        "activityBar.background": "#ab307e",
+        "activityBar.foreground": "#e7e7e7",
+        "activityBar.inactiveForeground": "#e7e7e799",
+        "activityBarBadge.background": "#25320e",
+        "activityBarBadge.foreground": "#e7e7e7",
+        "commandCenter.border": "#e7e7e799",
+        "sash.hoverBorder": "#ab307e",
+        "statusBar.background": "#832561",
+        "statusBar.foreground": "#e7e7e7",
+        "statusBarItem.hoverBackground": "#ab307e",
+        "statusBarItem.remoteBackground": "#832561",
+        "statusBarItem.remoteForeground": "#e7e7e7",
+        "titleBar.activeBackground": "#832561",
+        "titleBar.activeForeground": "#e7e7e7",
+        "titleBar.inactiveBackground": "#83256199",
+        "titleBar.inactiveForeground": "#e7e7e799"
+    },
+}

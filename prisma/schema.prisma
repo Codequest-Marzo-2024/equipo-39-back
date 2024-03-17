@@ -1,0 +1,82 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Role {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User[]
+
+  @@map("roles")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  isActive  Boolean  @default(true)
+  role      Role     @relation(fields: [roleId], references: [id])
+  roleId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Raffle    Raffle[]
+
+  @@map("users")
+}
+
+model Raffle {
+  id          Int           @id @default(autoincrement())
+  name        String
+  description String
+  url         String        @unique
+  isActive    Boolean       @default(true)
+  deadline    DateTime
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  madeBy      Int
+  User        User          @relation(fields: [madeBy], references: [id])
+  Participant Participant[]
+  Winner      Winner[]
+
+  @@map("raffles")
+}
+
+model Participant {
+  id        Int      @id @default(autoincrement())
+  userName  String
+  email     String
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  RaffleId  Int
+  Raffle    Raffle   @relation(fields: [RaffleId], references: [id])
+  Winner    Winner[]
+
+  @@map("participants")
+}
+
+model Winner {
+  id            Int         @id @default(autoincrement())
+  isActive      Boolean     @default(true)
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  RaffleId      Int
+  Raffle        Raffle      @relation(fields: [RaffleId], references: [id])
+  ParticipantId Int
+  Participant   Participant @relation(fields: [ParticipantId], references: [id])
+
+  @@map("winners")
+}
