@@ -1,11 +1,17 @@
 import * as Discord from 'discord.js';
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  Logger,
+} from '@nestjs/common';
 import { ConfigType } from '@nestjs/config';
 
 import config from '../../configurations/env-config';
 
 @Injectable()
 export class DiscordApiService {
+  private readonly logger = new Logger(DiscordApiService.name);
   private readonly client: Discord.Client;
 
   constructor(
@@ -20,7 +26,7 @@ export class DiscordApiService {
     });
 
     this.client.on('ready', () => {
-      console.log(`Logged in as ${this.client.user.tag}!`);
+      this.logger.log(`Logged in as ${this.client.user.tag}!`);
     });
 
     this.loginOnDiscord();
@@ -30,7 +36,7 @@ export class DiscordApiService {
     try {
       await this.client.login(this.configService.discord.botToken);
     } catch (error) {
-      console.error('Error logging in to Discord:', error);
+      this.logger.error('Error logging in to Discord:', error);
     }
   }
 
