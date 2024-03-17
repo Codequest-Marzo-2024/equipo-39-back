@@ -1,13 +1,16 @@
 import { Module } from '@nestjs/common';
-import { RafflesService } from './services/raffles.service';
-import { RafflesController } from './controllers/raffles.controller';
+
 import { PrismaService } from 'src/prisma.service';
-import { ParticipantsService } from './services/participants.service';
-import { DiscordApiService } from './services/discord-api.service';
-import { DrawRaffleService } from './services/draw-raffle.service';
+import { RafflesController, DiscordApiController } from './controllers';
+import {
+  RafflesService,
+  ParticipantsService,
+  DiscordApiService,
+  DrawRaffleService,
+} from './services';
 
 @Module({
-  controllers: [RafflesController],
+  controllers: [RafflesController, DiscordApiController],
   providers: [
     PrismaService,
     RafflesService,
