@@ -1,6 +1,9 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { DiscordApiService } from '../services';
+import { Auth } from 'src/auth/decorators';
+import { ValidRoles } from 'src/auth/interfaces';
 
+@Auth(ValidRoles.ADMIN)
 @Controller('discord-api')
 export class DiscordApiController {
   constructor(private readonly discordApiService: DiscordApiService) {}
