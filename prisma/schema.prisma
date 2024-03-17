@@ -39,6 +39,7 @@ model User {
 
 model Raffle {
   id          Int           @id @default(autoincrement())
+  code        String        @unique @default(uuid())
   name        String
   description String
   url         String        @unique
@@ -55,16 +56,17 @@ model Raffle {
 }
 
 model Participant {
-  id        Int      @id @default(autoincrement())
-  userName  String
-  email     String
-  isActive  Boolean  @default(true)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  RaffleId  Int
-  Raffle    Raffle   @relation(fields: [RaffleId], references: [id])
-  Winner    Winner[]
+  id         Int      @id @default(autoincrement())
+  idPlatform String
+  username   String
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  raffleId   Int
+  Raffle     Raffle   @relation(fields: [raffleId], references: [id])
+  Winner     Winner[]
 
+  @@unique([idPlatform, raffleId])
   @@map("participants")
 }
 
@@ -73,10 +75,10 @@ model Winner {
   isActive      Boolean     @default(true)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-  RaffleId      Int
-  Raffle        Raffle      @relation(fields: [RaffleId], references: [id])
-  ParticipantId Int
-  Participant   Participant @relation(fields: [ParticipantId], references: [id])
+  raffleId      Int
+  Raffle        Raffle      @relation(fields: [raffleId], references: [id])
+  participantId Int
+  Participant   Participant @relation(fields: [participantId], references: [id])
 
   @@map("winners")
 }
