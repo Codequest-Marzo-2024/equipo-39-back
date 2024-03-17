@@ -29,6 +29,10 @@ const envConfig = () => ({
     volumePG: process.env.DOCKER_VOLUME_PG,
   },
 
+  discord: {
+    botToken: process.env.DISCORD_BOT_TOKEN,
+  },
+
   jwtToken: process.env.JWT_SECRET,
 });
 

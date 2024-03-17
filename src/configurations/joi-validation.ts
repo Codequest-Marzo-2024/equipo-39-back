@@ -33,4 +33,6 @@ export const JoiValidationSchema = Joi.object({
 
   LOGIN_EMAIL: Joi.string().required(),
   LOGIN_PASSWORD: Joi.string().required(),
+
+  DISCORD_BOT_TOKEN: Joi.string().required(),
 });
