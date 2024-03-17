@@ -9,7 +9,7 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiTags, ApiOperation } from '@nestjs/swagger';
 
 import { Auth, GetUser } from 'src/auth/decorators';
 import { ValidRoles } from 'src/auth/interfaces';
@@ -43,6 +43,9 @@ export class RafflesController {
     return this.rafflesService.findOne(raffleId);
   }
 
+  @ApiOperation({
+    summary: 'Create a new raffle',
+  })
   @Auth(ValidRoles.ADMIN)
   @ApiBearerAuth('JWT')
   @Post()
@@ -75,6 +78,11 @@ export class RafflesController {
     return this.participantService.findAllParticipants(raffleId);
   }
 
+  @ApiOperation({
+    summary: 'Register a participant in a raffle',
+    description:
+      'The participant must belong to the community on the Discord server where the draw will take place.',
+  })
   @Post(':raffleId/participant')
   registerParticipant(
     @Param('raffleId', ParseIntPipe) raffleId: number,
@@ -96,6 +104,11 @@ export class RafflesController {
     return this.participantService.removeParticipant(raffleId, participantId);
   }
 
+  @ApiOperation({
+    summary: 'Draw the winners of a raffle',
+    description:
+      'Winners will be drawn from the list of participants who have registered for the draw. The giveaway must be active and not have ended its final date.',
+  })
   @Auth(ValidRoles.ADMIN)
   @ApiBearerAuth('JWT')
   @Get(':raffleId/draw/:quantityWinners')
