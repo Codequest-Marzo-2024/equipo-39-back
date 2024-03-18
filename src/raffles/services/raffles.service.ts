@@ -31,6 +31,7 @@ export class RafflesService {
           ...createRaffleDto,
           initialDate,
           finalDate,
+          code,
           url,
           User: {
             connect: {
@@ -73,19 +74,12 @@ export class RafflesService {
         where: {
           code: uuid,
         },
-        include: {
-          User: {
-            select: {
-              id: true,
-              email: true,
-            },
-          },
-          Winner: true,
-          _count: {
-            select: {
-              Participant: { where: { isActive: true } },
-            },
-          },
+        select: {
+          initialDate: true,
+          finalDate: true,
+          name: true,
+          description: true,
+          isActive: true,
         },
       });
     } catch (error) {

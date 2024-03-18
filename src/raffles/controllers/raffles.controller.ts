@@ -45,8 +45,6 @@ export class RafflesController {
   }
 
   @Get(':raffleUUID/uuid')
-  @Auth(ValidRoles.ADMIN)
-  @ApiBearerAuth('JWT')
   findOneRaffleByUUID(@Param('raffleUUID', ParseUUIDPipe) raffleUUID: string) {
     return this.rafflesService.findOneByUuid(raffleUUID);
   }
