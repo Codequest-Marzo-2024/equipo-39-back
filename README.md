@@ -29,3 +29,12 @@ Desarrollar una aplicación web que proporcione a la comunidad de DevTalles una 
 5. Ejecutar las migraciones de Prisma con `npx prisma migrate deploy`
 6. Ejcutar el seed de Prisma con `npx prisma db seed`
 7. Correr el servidor con `yarn start:dev` o `npm run start:dev`
+8. Las credenciales iniciales de administrador seran las indicadas en el archivo `.env` en las variables `LOGIN_EMAIL` y `LOGIN_PASSWORD`
+
+## Para acceder a la Documentación de la API
+
+- https://codequest.kindnexx.com/api/doc
+
+## Para acceder al Frontend en Producción
+
+- https://codequest.kindnexx.com
