@@ -91,13 +91,13 @@ export class RafflesController {
     description:
       'The participant must belong to the community on the Discord server where the draw will take place.',
   })
-  @Post(':raffleId/participant')
+  @Post(':raffleUUID/participant')
   registerParticipant(
-    @Param('raffleId', ParseIntPipe) raffleId: number,
+    @Param('raffleUUID', ParseUUIDPipe) raffleUUID: string,
     @Body() createParticipantDto: CreateParticipantDto,
   ) {
     return this.participantService.registerParticipant(
-      raffleId,
+      raffleUUID,
       createParticipantDto,
     );
   }

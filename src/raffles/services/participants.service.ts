@@ -1,11 +1,11 @@
+import { ConfigType } from '@nestjs/config';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import { PrismaService } from 'src/prisma.service';
 
+import { PrismaService } from 'src/prisma.service';
 import { handlerErrorDB } from 'src/common/utils/handler-errors-db';
 import config from 'src/configurations/env-config';
 import { CreateParticipantDto } from '../dto';
 import { DiscordApiService } from './discord-api.service';
-import { ConfigType } from '@nestjs/config';
 
 @Injectable()
 export class ParticipantsService {
@@ -17,10 +17,10 @@ export class ParticipantsService {
   ) {}
 
   async registerParticipant(
-    raffleId: number,
+    raffleUUID: string,
     createParticipantDto: CreateParticipantDto,
   ) {
-    await this.validateRaffleIsActive(raffleId);
+    await this.validateRaffleIsActive(raffleUUID);
 
     const isMemberInDiscord = await this.discordApiService.searchMemberById(
       this.configService.discord.idServer,
@@ -40,7 +40,7 @@ export class ParticipantsService {
           idPlatform: isMemberInDiscord.id,
           Raffle: {
             connect: {
-              id: raffleId,
+              code: raffleUUID,
             },
           },
         },
@@ -79,10 +79,10 @@ export class ParticipantsService {
     }
   }
 
-  async validateRaffleIsActive(raffleId: number) {
+  async validateRaffleIsActive(raffleUUID: string) {
     const raffle = await this.prismaService.raffle.findUnique({
       where: {
-        id: raffleId,
+        code: raffleUUID,
       },
     });
 
