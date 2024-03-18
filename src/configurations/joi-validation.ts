@@ -5,6 +5,7 @@ export const JoiValidationSchema = Joi.object({
     APP_HOST: Joi.string().required(),
     APP_PORT: Joi.number().required(),
     STATIC_PATH: Joi.string().required(),
+    APP_URL: Joi.string().required(),
   }),
 
   db: Joi.object({

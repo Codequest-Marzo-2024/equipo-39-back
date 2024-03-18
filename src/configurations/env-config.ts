@@ -4,6 +4,7 @@ const envConfig = () => ({
   app: {
     host: process.env.APP_HOST,
     port: process.env.APP_PORT,
+    appUrl: process.env.APP_URL,
     staticPath: process.env.STATIC_PATH,
   },
 
