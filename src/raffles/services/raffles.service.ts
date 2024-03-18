@@ -106,7 +106,16 @@ export class RafflesService {
               email: true,
             },
           },
-          Winner: true,
+          Winner: {
+            include: {
+              Participant: {
+                select: {
+                  id: true,
+                  username: true,
+                },
+              },
+            },
+          },
           _count: {
             select: {
               Participant: { where: { isActive: true } },
