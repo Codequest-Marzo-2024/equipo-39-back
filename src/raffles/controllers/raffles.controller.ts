@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  ParseUUIDPipe,
 } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { ApiBearerAuth, ApiTags, ApiOperation } from '@nestjs/swagger';
@@ -36,11 +37,18 @@ export class RafflesController {
     return this.rafflesService.findAll();
   }
 
-  @Get(':raffleId')
+  @Get(':id')
   @Auth(ValidRoles.ADMIN)
   @ApiBearerAuth('JWT')
-  findOneRaffleById(@Param('raffleId', ParseIntPipe) raffleId: number) {
-    return this.rafflesService.findOne(raffleId);
+  findOneRaffleById(@Param('id', ParseIntPipe) id: number) {
+    return this.rafflesService.findOne(id);
+  }
+
+  @Get(':raffleUUID/uuid')
+  @Auth(ValidRoles.ADMIN)
+  @ApiBearerAuth('JWT')
+  findOneRaffleByUUID(@Param('raffleUUID', ParseUUIDPipe) raffleUUID: string) {
+    return this.rafflesService.findOneByUuid(raffleUUID);
   }
 
   @ApiOperation({
