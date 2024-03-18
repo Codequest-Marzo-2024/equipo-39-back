@@ -4,7 +4,7 @@
         "$shared": {},
         "local": {
             "hostname": "http://0.0.0.0:3350/api",
-            "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTcxMDYyOTg5NiwiZXhwIjoxNzEwNjczMDk2fQ.jy-byLkV1qphNcZTtnwsacBAmfA8GDDywS81iAT5zgQ",
+            "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1aWQiOjEsImlhdCI6MTcxMDcxNzkyMSwiZXhwIjoxNzEwNzYxMTIxfQ._TPHWI0DkUboy7D8AiMh5QQkygfGWyj-iQFDCrRv-zQ",
         },
         "production": {
             "hostname": "https://0.0.0.0:3350/api",
