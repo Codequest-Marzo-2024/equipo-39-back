@@ -52,6 +52,9 @@ export class ParticipantsService {
 
   async findAllParticipants(raffleId: number) {
     return await this.prismaService.participant.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
       where: {
         Raffle: {
           id: raffleId,

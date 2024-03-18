@@ -48,6 +48,9 @@ export class RafflesService {
 
   async findAll() {
     return await this.prismaService.raffle.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
       include: {
         User: {
           select: {
