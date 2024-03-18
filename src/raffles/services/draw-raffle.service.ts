@@ -84,6 +84,15 @@ export class DrawRaffleService {
   }
 
   async removeWinners(raffleId: number) {
+    await this.prismaService.raffle.update({
+      where: {
+        id: raffleId,
+      },
+      data: {
+        isFinished: false,
+      },
+    });
+
     return await this.prismaService.winner.deleteMany({
       where: {
         raffleId,
