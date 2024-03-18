@@ -44,3 +44,6 @@ lerna-debug.log*
 
 # Rest client
 /rest-client
+
+# Public folder
+/public
